@@ -1,0 +1,112 @@
+package Bank;
+
+import java.util.Scanner;
+public class BankMain {
+	public static Scanner sc=new Scanner(System.in);
+	public SavingsAccount a=new SavingsAccount();
+	public Customer c=new Customer();
+
+public SavingsAccount createAccount(){
+	sc.nextLine();
+    System.out.print("Enter your full name: ");
+    String customername=sc.nextLine();
+    System.out.print("Enter your age: ");
+    int customerage=sc.nextInt();
+    if(customerage<18)
+    {      
+        do{
+        System.out.print("Minimum age should be 18 to create a bank account.\nPlease enter valid age: ");
+        customerage=sc.nextInt();
+        }while(customerage<18);
+    }    
+    
+    System.out.print("Enter your account Id: ");
+    int accountid=sc.nextInt();
+    System.out.print("Enter your account type: ");
+    String accounttype=sc.next();
+    System.out.print("Enter opening balance: ");
+    double balance=sc.nextDouble();
+    System.out.print("Enter minimum balance: ");
+    //instead we can set a constant
+    double minbalance=sc.nextDouble();
+    c.setCustomerName(customername);
+    c.setCustomerAge(customerage);
+    a.setAccountId(accountid);
+    a.setAccountType(accounttype);
+    a.setBalance(balance);
+    //a.setMinimumBalance(minbalance);
+   // a.setCustomerObject(c);
+    return a;	    
+	}
+        
+	public void getWithdrawAmount(double amount){
+	  
+	    if(amount>20000){
+	        System.out.println("Withdrawal failed. Maximum limit of one transaction is Rs.20000.");
+	    }
+	    else
+	    {    
+	        if(a.withdraw(amount)==true){
+	            System.out.println("Withdrawal successful. Balance is: "+a.getBalance());
+	        }
+	        else
+	            System.out.println("Sorry!!! Not enough balance");
+	    }    
+	}
+    
+    public void depositAmount(double amount){
+        double bal=a.getBalance()+amount;
+        a.setBalance(bal);
+        System.out.println("Amount deposited successfully. Balance is: "+a.getBalance());
+    }
+    
+    public void checkBalance(){
+        System.out.println("Balance is: "+a.getBalance());
+    }
+    
+    public void displayAccountInformation(){
+        System.out.println("Welcome "+c.getCustomerName()+"! Following are your account details:");
+        System.out.println("Age :"+c.getCustomerAge());
+        System.out.println("Account Id: "+a.getAccountId());
+        System.out.println("Account Type: "+a.getAccountType());
+        System.out.println("Balance: "+a.getBalance());
+        System.out.println("Minimum balance: "+a.getMinimumBalance());
+    }
+        
+public static void main(String[] args){ 
+            SavingsAccount a;
+            BankMain bm=new BankMain();
+            String ans;
+            do{
+               System.out.println("\n1.Create Account\n2.Display Account\n3.Check Balance\n4.Deposit Amount\n5.Withdraw Amount");
+               System.out.print("Enter your choice: ");
+               int choice=sc.nextInt();
+               System.out.println("");
+               switch(choice)
+               {
+                    case 1:a=bm.createAccount();
+                           break;
+                           
+                    case 2:bm.displayAccountInformation();
+                           break;
+                           
+                    case 3:bm.checkBalance();
+                           break;       
+                           
+                    case 4:System.out.print("Enter the amount to deposit: ");
+                           double amount=sc.nextDouble();
+                           bm.depositAmount(amount);
+                           break; 
+                           
+                    case 5:System.out.print("Enter the amount to withdraw: ");
+             	   			double wamount=sc.nextDouble();
+                    		bm.getWithdrawAmount(wamount);
+                           break;
+                           
+                    default:break;       
+            }
+            System.out.print("\nDo you want to perform more actions? (yes/no): ");  
+            ans=sc.next();
+            }while(ans.equalsIgnoreCase("yes"));
+        }
+}
